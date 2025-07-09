@@ -1,7 +1,6 @@
-from wwsc.starting.relay_control import RelayControl
-from wwsc.starting.camera_control import CameraControl
 import datetime
 import threading
+import time
 
 class RaceSequence:
     def __init__(self, relay_control, camera_control):
@@ -32,22 +31,26 @@ class RaceSequence:
 
     def run_race(self, ignore):
         # Work out when we will start the race
-        self.start_time = datetime.datetime.now() - self.starting_sequence[0]["time"]
+        self.start_time = datetime.datetime.now() - datetime.timedelta(seconds=self.starting_sequence[0]["time"])
         current_sequence = 0
         # Now loop forever running the race 
         while(True):
-            now = datetime.datetime.now() - self.start_time
+            now = datetime.datetime.now()
+            race_time = now - self.start_time
 
             while current_sequence < len(self.starting_sequence):
                 # If we need to perform the next action ....
-                if now > self.starting_sequence[current_sequence]["time"]:
+                if race_time.total_seconds() > self.starting_sequence[current_sequence]["time"]:
                     self.relay_control.set_lights(self.starting_sequence[current_sequence]["lights"])
-                    self.relay_control.set_horn(self.starting_sequence[current_sequence]["horn"])
+                    self.relay_control.sound_horn(self.starting_sequence[current_sequence]["horn"])
                     current_sequence = current_sequence + 1
                 else:
                     break
 
             # Generate the timing overlay string for the video
+            current_date = now.strftime("YYYY-MM-DD")
+            current_time = now.strftime("HH:mm:ss")
+
             overlay_string = f"Date: {current_date}, Current Time: {current_time}, Race Time: {race_time}"
             self.camera_control.set_overlay_string(overlay_string)
 
