@@ -31,6 +31,28 @@ class ReplayControl:
                 silence_thread = threading.Thread(target=self.silence_horn, args=(i,))
                 silence_thread.start()
                 
+    def start_test(self):
+        silence_thread = threading.Thread(target=self.run_tests, args=("ignore",))
+        silence_thread.start()
+        
+    def run_tests(self, ignore):
+        """
+        Turn things one 1 by 1
+        
+        """
+        time.sleep(5)
+
+        for horn in self.horn_pins:
+            GPIO.output(horn,GPIO.HIGH)
+            time.sleep(0.5)
+            GPIO.output(horn,GPIO.LOW)
+            time.sleep(1)
+
+        for light in self.light_pins:
+            GPIO.output(light,GPIO.HIGH)
+            time.sleep(5)
+            GPIO.output(light,GPIO.LOW)
+            time.sleep(1)
 
     def silence_horn(self, horn):
         """

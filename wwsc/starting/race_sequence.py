@@ -2,8 +2,20 @@ import datetime
 import threading
 import time
 
+def format_seconds(seconds):
+    negative = ""
+    if seconds < 0:
+        seconds =- seconds 
+        negative = "-"
+
+    hours = int(seconds / (60*60))
+    minutes = int(seconds/60)%60
+    second = int(seconds%60)
+
+    return f"{negative}{minutes:02d}:{second:02d}"
+
 class RaceSequence:
-    def __init__(self, relay_control, camera_control):
+    def __init__(self, relay_control, camera_control, gui):
         self.starting_sequence=[{"time":-240,"lights": [1,1,1], "horn": [0,0]},
                                 {"time":-238,"lights": [0,0,0], "horn": [1,0]},
                                 {"time":-180,"lights": [1,1,1], "horn": [1,0]},
@@ -13,6 +25,7 @@ class RaceSequence:
         self.previous_time = None
         self.relay_control = relay_control
         self.camera_control = camera_control
+        self.gui = gui
         
 
     def reset(self):
@@ -48,11 +61,16 @@ class RaceSequence:
                     break
 
             # Generate the timing overlay string for the video
-            current_date = now.strftime("YYYY-MM-DD")
-            current_time = now.strftime("HH:mm:ss")
+            start_time = self.start_time.strftime("%H:%M:%S")
+            current_date = now.strftime("%Y-%m-%d")
+            current_time = now.strftime("%H:%M:%S")
+            race_time_formatted = format_seconds(race_time.total_seconds())
 
-            overlay_string = f"Date: {current_date}, Current Time: {current_time}, Race Time: {race_time}"
+            overlay_string = f"Date: {current_date}, Current Time: {current_time}, Race Time: {race_time_formatted}"
             self.camera_control.set_overlay_string(overlay_string)
+
+            if self.gui is not None:
+                self.gui.set_status(current_date, start_time, str(race_time_formatted))
 
             # Sleep for 200ms - this iwll be the resolution of our timing
             time.sleep(0.2)
