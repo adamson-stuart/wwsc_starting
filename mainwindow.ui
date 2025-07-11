@@ -27,6 +27,9 @@
      <string>Relays</string>
     </property>
     <widget class="QLabel" name="label">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -247,15 +250,16 @@
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QGraphicsView" name="start_image">
+    <widget class="QWidget" name="verticalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>370</x>
-       <y>30</y>
-       <width>191</width>
-       <height>141</height>
+       <x>240</x>
+       <y>40</y>
+       <width>231</width>
+       <height>121</height>
       </rect>
      </property>
+     <layout class="QVBoxLayout" name="preview_layout"/>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
