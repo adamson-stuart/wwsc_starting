@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QPushButton
 from PyQt5 import uic, QtGui
 import time
 from wwsc.starting.race_sequence import RaceSequence
+from wwsc.starting.camera_control import CameraControl
+
 import qrcode
 
 class MainWindow(QMainWindow):
@@ -109,13 +111,14 @@ if __name__ == "__main__":
     """
 
     from wwsc.starting.dummy_relay_control import DummyRelayControl
-    from wwsc.starting.camera_control import CameraControl
+    
 
     root_window = uic.loadUi("mainwindow.ui")
     root_window.show()
     relay_control = DummyRelayControl([1,2,3],[4,5])
     gui = Gui(root_window, relay_control)
-    race_sequence = RaceSequence(relay_control, CameraControl(),gui)
+    camera_control = CameraControl(gui.main_window.preview_layout)
+    race_sequence = RaceSequence(relay_control, camera_control,gui)
     gui.set_race_sequence(race_sequence)
     app.exec()
 
