@@ -61,6 +61,7 @@ class Gui:
         self.race_sequence = None
         self.set_status("","","")
         main_window.start_button.clicked.connect(self.start_race)
+        main_window.reset_button.clicked.connect(self.reset_race)
         main_window.test_relays.clicked.connect(self.start_test)
         main_window.download_qr_code.setPixmap(pil2pixmap(self.get_video_download_url()))
 
@@ -72,6 +73,9 @@ class Gui:
         self.main_window.light3.setChecked(lights[2])
         self.main_window.horn1.setChecked(horns[0])
         self.main_window.horn2.setChecked(horns[1])
+
+    def set_video_filename(self, filename):
+        self.main_window.video_file.setText(filename)
 
     def get_video_download_url(self):
         qr = qrcode.QRCode(
@@ -95,6 +99,9 @@ class Gui:
     def start_race(self):
         self.race_sequence.start()
 
+    def reset_race(self):
+        self.race_sequence.reset()
+
     def set_status(self, current_time, start_time, race_time):
         self.main_window.start_time.setText(start_time)
         self.main_window.race_time.setText(race_time)
@@ -117,7 +124,7 @@ if __name__ == "__main__":
     root_window.show()
     relay_control = DummyRelayControl([1,2,3],[4,5])
     gui = Gui(root_window, relay_control)
-    camera_control = CameraControl(gui.main_window.preview_layout)
+    camera_control = CameraControl(gui.main_window.preview_area)
     race_sequence = RaceSequence(relay_control, camera_control,gui)
     gui.set_race_sequence(race_sequence)
     app.exec()
