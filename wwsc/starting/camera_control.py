@@ -26,7 +26,7 @@ class CameraControl:
 
     def start_recording(self):
         if not self.recording:
-            filename = "/home/sailing/videos/"+str(datetime.datetime.now())+".mp4"
+            filename = "/var/www/html/"+str(datetime.datetime.now())+".mp4"
             fourcc = cv2.VideoWriter_fourcc(*'X264')
             self.output = cv2.VideoWriter(filename, fourcc, 30.0,(640,480))
             self.recording = True
