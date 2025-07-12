@@ -8,21 +8,23 @@ class CameraControl:
         self.preview_area = preview_area
         self.overlay_string="hello"
         self.camera = cv2.VideoCapture(0)
-        self.camera.set(cv2.CAP_PROP_FRAME_WIDTH,640)
-        self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
-        self.camera.set(cv2.CAP_PROP_FPS,5)
+        print(self.camera.set(cv2.CAP_PROP_FRAME_WIDTH,640))
+        print(self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT,480))
+        print(self.camera.set(cv2.CAP_PROP_AUTO_EXPOSURE,3))
+        print(self.camera.get(cv2.CAP_PROP_EXPOSURE))
+        print(self.camera.set(cv2.CAP_PROP_EXPOSURE,200.0))
+        print(self.camera.set(cv2.CAP_PROP_FPS,5))
         
-        #preview_area.addWidget(qpicamera2, 80)
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_frame)
-        self.timer.start(200)
+        self.timer.start(10)
 
     def set_overlay_string(self, text):
         self.overlay_string = text
 
     def start_recording(self):
         if not self.recording:
-            filename = "/Users/stuartadamson/videos/"+str(datetime.datetime.now())+".mp4"
+            filename = "/home/sailing/videos/"+str(datetime.datetime.now())+".mp4"
             fourcc = cv2.VideoWriter_fourcc(*'mp4v')
             self.output = cv2.VideoWriter(filename, fourcc, 5.0,(640,480))
             self.recording = True
@@ -38,7 +40,9 @@ class CameraControl:
     def update_frame(self):
         ret, frame = self.camera.read()
         if ret:
-            cv2.putText(frame, self.overlay_string,(5,40),cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,255),2,cv2.LINE_AA)
+            #cv2.putText(frame, self.overlay_string,(5,30),cv2.FONT_HERSHEY_SIMPLEX,0.5,(255,255,255),2,cv2.LINE_AA)
+            if self.recording:
+                self.output.write(frame)
             rbg_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             h,w,ch=rbg_image.shape
             bytes_per_line = ch*w
