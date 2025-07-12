@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>600</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>-20</y>
       <width>251</width>
       <height>80</height>
      </rect>
@@ -137,9 +137,9 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>100</y>
-      <width>591</width>
+      <x>10</x>
+      <y>60</y>
+      <width>491</width>
       <height>181</height>
      </rect>
     </property>
@@ -250,25 +250,27 @@
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QWidget" name="verticalLayoutWidget">
+    <widget class="QLabel" name="preview_area">
      <property name="geometry">
       <rect>
-       <x>240</x>
-       <y>40</y>
-       <width>231</width>
-       <height>121</height>
+       <x>280</x>
+       <y>50</y>
+       <width>120</width>
+       <height>120</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="preview_layout"/>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>310</y>
-      <width>221</width>
-      <height>201</height>
+      <x>10</x>
+      <y>240</y>
+      <width>191</width>
+      <height>161</height>
      </rect>
     </property>
     <property name="title">
@@ -279,8 +281,8 @@
       <rect>
        <x>20</x>
        <y>40</y>
-       <width>141</width>
-       <height>141</height>
+       <width>121</width>
+       <height>101</height>
       </rect>
      </property>
      <property name="text">
@@ -297,10 +299,16 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>600</width>
      <height>24</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>   </string>
+    </property>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
