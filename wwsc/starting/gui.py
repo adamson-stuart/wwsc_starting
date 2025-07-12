@@ -85,7 +85,7 @@ class Gui:
             border=4,
         )
 
-        qr.add_data('http://'+get_ip()+':8081/videos/')
+        qr.add_data('http://'+get_ip()+'/')
         qr.make(fit=True)
 
         img = qr.make_image(fill_color="black", back_color="white")
