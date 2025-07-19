@@ -117,12 +117,12 @@ if __name__ == "__main__":
     root_window.show()
     """
 
-    from wwsc.starting.dummy_relay_control import DummyRelayControl
+    from wwsc.starting.relay_control import RelayControl
     
 
     root_window = uic.loadUi("mainwindow.ui")
     root_window.show()
-    relay_control = DummyRelayControl([1,2,3],[4,5])
+    relay_control = RelayControl([5,6,13],[26,21])
     gui = Gui(root_window, relay_control)
     camera_control = CameraControl(gui.main_window.preview_area)
     race_sequence = RaceSequence(relay_control, camera_control,gui)
