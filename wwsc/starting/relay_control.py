@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import threading
 import time
 
-class ReplayControl:
+class RelayControl:
     def __init__(self, light_pins, horn_pins):
         self.light_pins = light_pins
         self.horn_pins = horn_pins
@@ -22,7 +22,7 @@ class ReplayControl:
 
     def set_lights(self, lights):
         for i, status in enumerate(lights):
-            GPIO.output(self.light_pins[i],GPIO.HIGH is status else GPIO.LOW)
+            GPIO.output(self.light_pins[i],GPIO.HIGH if status else GPIO.LOW)
 
     def sound_horn(self, horns):
         for i, status in enumerate(horns):
