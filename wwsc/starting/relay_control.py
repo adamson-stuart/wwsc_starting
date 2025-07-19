@@ -6,7 +6,10 @@ class RelayControl:
     def __init__(self, light_pins, horn_pins):
         self.light_pins = light_pins
         self.horn_pins = horn_pins
-        self.horn_status = []
+        self.light_status = [False]*len(light_pins)
+        self.horn_status = [False]*len(horn_pins)
+        
+        self.callback = None
 
         # Use BCM channel numbers rather than pin numbers
         GPIO.setmode(GPIO.BCM)
@@ -18,17 +21,27 @@ class RelayControl:
         for pin in horn_pins:
             GPIO.setup(pin,GPIO.OUT)
             GPIO.output(pin, GPIO.LOW)
-            self.horn_status.append(0)
+
+    def set_callback(self, callback):
+        self.callback = callback
 
     def set_lights(self, lights):
         for i, status in enumerate(lights):
             GPIO.output(self.light_pins[i],GPIO.HIGH if status else GPIO.LOW)
+        if self.callback is not None:
+            self.callback.relay_callback(self.light_status,self.horn_status)
+
 
     def sound_horn(self, horns):
         for i, status in enumerate(horns):
             if status:
                 GPIO.output(self.horn_pins[i],GPIO.HIGH)
+                self.horn_status[i]=status
+                if self.callback is not None:
+                    self.callback.relay_callback(self.light_status,self.horn_status)
+
                 silence_thread = threading.Thread(target=self.silence_horn, args=(i,))
+
                 silence_thread.start()
                 
     def start_test(self):
@@ -61,3 +74,7 @@ class RelayControl:
         """
         time.sleep(1)
         GPIO.output(self.horn_pins[horn],GPIO.LOW)
+        self.horn_status[i]=False
+        if self.callback is not None:
+            self.callback.relay_callback(self.light_status,self.horn_status)
+
