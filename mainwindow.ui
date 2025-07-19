@@ -6,21 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
+    <width>482</width>
     <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>-20</y>
-      <width>251</width>
-      <height>80</height>
+      <y>10</y>
+      <width>461</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="title">
@@ -45,8 +48,8 @@
     <widget class="QLabel" name="label_5">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>50</y>
+       <x>200</x>
+       <y>30</y>
        <width>58</width>
        <height>16</height>
       </rect>
@@ -97,8 +100,8 @@
     <widget class="QCheckBox" name="horn1">
      <property name="geometry">
       <rect>
-       <x>70</x>
-       <y>50</y>
+       <x>240</x>
+       <y>30</y>
        <width>85</width>
        <height>20</height>
       </rect>
@@ -110,8 +113,8 @@
     <widget class="QCheckBox" name="horn2">
      <property name="geometry">
       <rect>
-       <x>90</x>
-       <y>50</y>
+       <x>260</x>
+       <y>30</y>
        <width>85</width>
        <height>20</height>
       </rect>
@@ -123,8 +126,8 @@
     <widget class="QPushButton" name="test_relays">
      <property name="geometry">
       <rect>
-       <x>140</x>
-       <y>40</y>
+       <x>350</x>
+       <y>20</y>
        <width>100</width>
        <height>32</height>
       </rect>
@@ -138,9 +141,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>60</y>
-      <width>491</width>
-      <height>181</height>
+      <y>80</y>
+      <width>461</width>
+      <height>141</height>
      </rect>
     </property>
     <property name="title">
@@ -176,7 +179,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>100</y>
+       <y>90</y>
        <width>71</width>
        <height>16</height>
       </rect>
@@ -189,7 +192,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>130</y>
+       <y>110</y>
        <width>71</width>
        <height>16</height>
       </rect>
@@ -201,8 +204,8 @@
     <widget class="QPushButton" name="reset_button">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>150</y>
+       <x>120</x>
+       <y>30</y>
        <width>100</width>
        <height>32</height>
       </rect>
@@ -228,7 +231,7 @@
      <property name="geometry">
       <rect>
        <x>130</x>
-       <y>100</y>
+       <y>90</y>
        <width>181</width>
        <height>16</height>
       </rect>
@@ -241,22 +244,9 @@
      <property name="geometry">
       <rect>
        <x>130</x>
-       <y>130</y>
-       <width>191</width>
+       <y>110</y>
+       <width>311</width>
        <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="preview_area">
-     <property name="geometry">
-      <rect>
-       <x>280</x>
-       <y>50</y>
-       <width>120</width>
-       <height>120</height>
       </rect>
      </property>
      <property name="text">
@@ -268,21 +258,21 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>240</y>
-      <width>191</width>
-      <height>161</height>
+      <y>230</y>
+      <width>461</width>
+      <height>191</height>
      </rect>
     </property>
     <property name="title">
-     <string>Video Download</string>
+     <string>Video</string>
     </property>
     <widget class="QLabel" name="download_qr_code">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>40</y>
-       <width>121</width>
-       <height>101</height>
+       <y>30</y>
+       <width>161</width>
+       <height>151</height>
       </rect>
      </property>
      <property name="text">
@@ -292,6 +282,19 @@
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QLabel" name="preview_area">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>20</y>
+       <width>161</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -299,7 +302,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>482</width>
      <height>24</height>
     </rect>
    </property>
@@ -308,7 +311,19 @@
      <string>   </string>
     </property>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>   </string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>         </string>
+    </property>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
