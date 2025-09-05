@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>482</width>
+    <width>750</width>
     <height>449</height>
    </rect>
   </property>
@@ -17,284 +17,151 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QPushButton" name="test_relays">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>80</x>
+      <y>60</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Test</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
       <y>10</y>
-      <width>461</width>
-      <height>61</height>
+      <width>81</width>
+      <height>16</height>
      </rect>
     </property>
-    <property name="title">
-     <string>Relays</string>
+    <property name="text">
+     <string>Start Time</string>
     </property>
-    <widget class="QLabel" name="label">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>58</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Lights</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>30</y>
-       <width>58</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Horn</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="light1">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>30</y>
-       <width>85</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="light2">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>30</y>
-       <width>85</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="light3">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>30</y>
-       <width>85</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="horn1">
-     <property name="geometry">
-      <rect>
-       <x>240</x>
-       <y>30</y>
-       <width>85</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="horn2">
-     <property name="geometry">
-      <rect>
-       <x>260</x>
-       <y>30</y>
-       <width>85</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="test_relays">
-     <property name="geometry">
-      <rect>
-       <x>350</x>
-       <y>20</y>
-       <width>100</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Test</string>
-     </property>
-    </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_2">
+   <widget class="QLabel" name="start_time">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>80</y>
-      <width>461</width>
-      <height>141</height>
+      <x>380</x>
+      <y>10</y>
+      <width>161</width>
+      <height>16</height>
      </rect>
     </property>
-    <property name="title">
-     <string>Race</string>
+    <property name="text">
+     <string>TextLabel</string>
     </property>
-    <widget class="QPushButton" name="start_button">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>100</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Start</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_6">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>70</y>
-       <width>81</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Start Time</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_7">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>90</y>
-       <width>71</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Race Time</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_8">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>110</y>
-       <width>71</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Video File</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="reset_button">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>30</y>
-       <width>100</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Reset</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="start_time">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>70</y>
-       <width>161</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="race_time">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>90</y>
-       <width>181</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="video_file">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>110</y>
-       <width>311</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_3">
+   <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>500</x>
+      <y>10</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Race Time</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="race_time">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>10</y>
+      <width>181</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="download_qr_code">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
       <y>230</y>
-      <width>461</width>
-      <height>191</height>
+      <width>161</width>
+      <height>151</height>
      </rect>
     </property>
-    <property name="title">
-     <string>Video</string>
+    <property name="text">
+     <string>TextLabel</string>
     </property>
-    <widget class="QLabel" name="download_qr_code">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>161</width>
-       <height>151</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="preview_area">
-     <property name="geometry">
-      <rect>
-       <x>260</x>
-       <y>20</y>
-       <width>161</width>
-       <height>161</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>400</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Video File</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="video_file">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>400</y>
+      <width>311</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="start_button">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>100</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Start</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="reset_button">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>140</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reset</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="preview_area">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>40</y>
+      <width>411</width>
+      <height>331</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -302,23 +169,23 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>482</width>
+     <width>750</width>
      <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
-     <string>   </string>
+     <string/>
     </property>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
-     <string>   </string>
+     <string/>
     </property>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
-     <string>         </string>
+     <string/>
     </property>
    </widget>
    <addaction name="menu"/>
