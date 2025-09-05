@@ -122,7 +122,7 @@ if __name__ == "__main__":
 
     root_window = uic.loadUi("mainwindow.ui")
     root_window.show()
-    relay_control = RelayControl([5,6,13],[26,21])
+    relay_control = RelayControl([5,13,6],[26,19])
     gui = Gui(root_window, relay_control)
     camera_control = CameraControl(gui.main_window.preview_area)
     race_sequence = RaceSequence(relay_control, camera_control,gui)
