@@ -3,6 +3,20 @@ import cv2
 import datetime
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QImage, QPixmap
+
+VIDEO_WIDTH = 640
+VIDEO_HEIGHT = 480
+font_scale = 0.5
+VIDEO_WIDTH = 1280
+VIDEO_HEIGHT = 720
+font_scale = 1
+preview_scale = 4
+"""
+VIDEO_WIDTH = 1920
+VIDEO_HEIGHT = 1080
+font_scale = 1.5
+preview_scale = 5
+"""
 class CameraControl:
     def __init__(self, preview_area):
         self.recording = False
@@ -10,13 +24,18 @@ class CameraControl:
         self.preview_area = preview_area
         self.overlay_string=""
         self.camera = cv2.VideoCapture(0)
-        print(self.camera.set(cv2.CAP_PROP_FRAME_WIDTH,640))
-        print(self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT,480))
-        print(self.camera.set(cv2.CAP_PROP_AUTO_EXPOSURE,3))
-        print(self.camera.get(cv2.CAP_PROP_EXPOSURE))
-        print(self.camera.set(cv2.CAP_PROP_EXPOSURE,200.0))
-        print(self.camera.set(cv2.CAP_PROP_FPS,5))
-        
+        self.camera.set(cv2.CAP_PROP_FRAME_WIDTH,VIDEO_WIDTH)
+        self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT,VIDEO_HEIGHT)
+        self.camera.set(cv2.CAP_PROP_AUTO_EXPOSURE,3)
+        print("Video Width: "+str(self.camera.get(cv2.CAP_PROP_FRAME_WIDTH)))
+        print("Video Height: "+str(self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+        print("Video Autoexposure: "+str(self.camera.get(cv2.CAP_PROP_AUTO_EXPOSURE)))
+
+        # Ask the camera to record 10 frames per second.  We won't save all of these - but no need getting 30 or so 
+        self.camera.set(cv2.CAP_PROP_FPS,10)
+        print("Video FPR: "+str(self.camera.get(cv2.CAP_PROP_FPS)))
+
+        # Start a thread which fires every 50ms to attempt to read video
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(50)
@@ -25,34 +44,54 @@ class CameraControl:
         self.overlay_string = text
 
     def start_recording(self):
+        """
+        Start recording.  Note that we play a little trick here.  We say the video is running a 15 fps - but we only save down
+        a frame twice a second.  This ways the video appears to run a 7.5x speed
+        """
         if not self.recording:
             filename = "/var/www/html/"+str(datetime.datetime.now())+".mp4"
             fourcc = cv2.VideoWriter_fourcc(*'X264')
-            self.output = cv2.VideoWriter(filename, fourcc, 30.0,(640,480))
+            self.output = cv2.VideoWriter(filename, fourcc, 15.0,(VIDEO_WIDTH,VIDEO_HEIGHT))
+            self.output.set(cv2.VIDEOWRITER_PROP_QUALITY,100)
+            print ("Video Quality: "+str(self.output.get(cv2.VIDEOWRITER_PROP_QUALITY)))
             self.recording = True
             return filename
         
         return None
 
     def stop_recording(self):
+        """
+        Stop recording.  This is cause the video to be saved down
+        """
         if self.recording:
             self.output.release()
             self.recording = False
         
     def update_frame(self):
+        """
+        Process 1 frame of video.  This will attempt to read a frame of video from the camera, add a text overlay onto it
+        and if we are recording write out the video frame
+        """
         ret, frame = self.camera.read()
         if ret:
-            cv2.putText(frame, self.overlay_string,(5,30),cv2.FONT_HERSHEY_SIMPLEX,0.5,(255,255,255),2,cv2.LINE_AA)
+            cv2.putText(frame, self.overlay_string,(5,30),cv2.FONT_HERSHEY_SIMPLEX,font_scale,(0,0,200),2,cv2.LINE_AA)
+
             if self.recording:
                 current_millis = time() * 1000
-                if current_millis - self.last_video_frame_time > 250:
+                # Only record 2 frames per second
+                if current_millis - self.last_video_frame_time > 500:
                     self.output.write(frame)
                     self.last_video_frame_time = current_millis
+
+            # Prepare image for preview
             rbg_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             h,w,ch=rbg_image.shape
             bytes_per_line = ch*w
             qt_image = QImage(rbg_image.data,w,h,bytes_per_line, QImage.Format_RGB888)
-            scaled_image = qt_image.scaled(120,120)
-            self.preview_area.setPixmap(QPixmap.fromImage(scaled_image))
+            scale = 210.0/VIDEO_HEIGHT
+            scaled_image = qt_image.scaled(int(VIDEO_WIDTH*scale), int(VIDEO_HEIGHT*scale))
+            image = QPixmap.fromImage(scaled_image)
+            #image.setOffset((420-VIDEO_WIDTH*scale)/2,0)
+            self.preview_area.setPixmap(image)
 
 
