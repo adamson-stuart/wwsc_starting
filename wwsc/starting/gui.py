@@ -58,6 +58,10 @@ class Gui:
         main_window.test_relays.clicked.connect(self.start_test)
         main_window.download_qr_code.setPixmap(pil2pixmap(self.get_video_download_url()))
 
+    def set_video_formats(self, formats):
+        for format in formats:
+            self.main_window.video_format.addItem(format,format)
+
     def relay_callback(self, lights, horns):
         for (status, widget) in zip(lights,self.light_status):
             widget.setText("X" if status else "O")
@@ -89,7 +93,7 @@ class Gui:
         self.race_sequence = race_sequence
 
     def start_race(self):
-        self.race_sequence.start(self.main_window.race_type.currentText())
+        self.race_sequence.start(self.main_window.race_type.currentText(),self.main_window.video_format.currentText())
 
     def reset_race(self):
         self.race_sequence.reset()
@@ -109,6 +113,7 @@ if __name__ == "__main__":
     relay_control = RelayControl([5,13,6],[26,19],17)
     gui = Gui(root_window, relay_control)
     camera_control = CameraControl(gui.main_window.preview_area)
+    gui.set_video_formats(camera_control.get_available_formats())
     race_sequence = RaceSequence(relay_control, camera_control,gui)
     gui.set_race_sequence(race_sequence)
     gui.reset_race()
