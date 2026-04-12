@@ -46,7 +46,7 @@ class RaceSequence:
         self.relay_control.set_lights([0,0,0])
         time.sleep(0.2)
 
-    def start(self, sequence_type = None):
+    def start(self, sequence_type = None, video_format = None):
         # Call reset just in case ....
         self.reset()
 
@@ -82,13 +82,13 @@ class RaceSequence:
                                     {"time":0,"lights": [0,0,0], "horn": [1,0]}]
         self.race_running = False
         # Start a thread to run the race
-        self.race_thread = threading.Thread(target=self.run_race, args=("",))
+        self.race_thread = threading.Thread(target=self.run_race, args=(video_format,))
         self.race_running = True
         self.race_thread.start()
 
 
-    def run_race(self, ignore):
-        filename = self.camera_control.start_recording()
+    def run_race(self, video_format):
+        filename = self.camera_control.start_recording(video_format)
         self.gui.set_video_filename(filename)
         # Work out when we will start the race
         self.start_time = datetime.datetime.now() - datetime.timedelta(seconds=self.starting_sequence[0]["time"])
