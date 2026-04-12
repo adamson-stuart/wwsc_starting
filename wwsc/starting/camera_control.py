@@ -1,4 +1,5 @@
 from time import time
+import tempfile
 import cv2
 import datetime
 from PyQt5.QtCore import QTimer
@@ -43,14 +44,27 @@ class CameraControl:
     def set_overlay_string(self, text):
         self.overlay_string = text
 
-    def start_recording(self):
+    def get_available_formats(self):
+        codecs_to_test = ["H264", "DIVX", "XVID", "MJPG", "X264", "WMV1", "WMV2", "FMP4", "mp4v", "avc1"]
+        available_codecs = []
+        for codec in codecs_to_test:
+            try:
+                fourcc = cv2.VideoWriter_fourcc(*codec)
+                temp_video = cv2.VideoWriter(tempfile.gettempdir()+'/codec_test.mkv', fourcc, 30, (640, 480), isColor=True)
+                available_codecs.append(codec)
+            except:
+                pass
+        print(available_codecs)
+        return available_codecs
+
+    def start_recording(self,video_format):
         """
         Start recording.  Note that we play a little trick here.  We say the video is running a 15 fps - but we only save down
         a frame twice a second.  This ways the video appears to run a 7.5x speed
         """
         if not self.recording:
-            filename = "/var/www/html/"+str(datetime.datetime.now())+".mp4"
-            fourcc = cv2.VideoWriter_fourcc(*'X264')
+            filename = "/var/www/html/"+datetime.datetime.now().strftime("%Y%m%d_%H%M%S")+"_"+video_format+".mkv"
+            fourcc = cv2.VideoWriter_fourcc(*video_format)
             self.output = cv2.VideoWriter(filename, fourcc, 15.0,(VIDEO_WIDTH,VIDEO_HEIGHT))
             self.output.set(cv2.VIDEOWRITER_PROP_QUALITY,100)
             print ("Video Quality: "+str(self.output.get(cv2.VIDEOWRITER_PROP_QUALITY)))
