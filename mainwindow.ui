@@ -36,7 +36,7 @@
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>380</x>
       <y>400</y>
       <width>71</width>
       <height>16</height>
@@ -49,9 +49,9 @@
    <widget class="QLabel" name="video_file">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>460</x>
       <y>400</y>
-      <width>311</width>
+      <width>271</width>
       <height>16</height>
      </rect>
     </property>
@@ -209,6 +209,16 @@
      </property>
      <property name="text">
       <string>Start Time</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="video_format">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>280</y>
+       <width>103</width>
+       <height>32</height>
+      </rect>
      </property>
     </widget>
    </widget>
