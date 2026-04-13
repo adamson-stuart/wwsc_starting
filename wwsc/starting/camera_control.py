@@ -19,7 +19,7 @@ font_scale = 1.5
 preview_scale = 5
 """
 class CameraControl:
-    def __init__(self, preview_area):
+    def __init__(self, preview_area, haarcascade = None):
         self.recording = False
         self.last_video_frame_time = time()*1000
         self.preview_area = preview_area
@@ -28,6 +28,10 @@ class CameraControl:
         self.camera.set(cv2.CAP_PROP_FRAME_WIDTH,VIDEO_WIDTH)
         self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT,VIDEO_HEIGHT)
         self.camera.set(cv2.CAP_PROP_AUTO_EXPOSURE,3)
+        if haarcascade is not None:
+            self.boat_cascade = cv2.CascadeClassifier(haarcascade)
+        else:
+            self.boat_cascade = None
         print("Video Width: "+str(self.camera.get(cv2.CAP_PROP_FRAME_WIDTH)))
         print("Video Height: "+str(self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT)))
         print("Video Autoexposure: "+str(self.camera.get(cv2.CAP_PROP_AUTO_EXPOSURE)))
@@ -97,6 +101,12 @@ class CameraControl:
                     self.output.write(frame)
                     self.last_video_frame_time = current_millis
 
+            # Image recognition - convert to grayscale
+            if self.boat_cascade is not None:
+                gray_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                boats = self.boat_cascade.detectMultiScale(gray_image, scaleFactor=1.1,minNeighbors=5, minSize=(30,30))
+                for (x,y,width,height) in boats:
+                    cv2.rectangle(frame, (x,y), (x+width,y+height), (255, 0, 0), 2)
             # Prepare image for preview
             rbg_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             h,w,ch=rbg_image.shape
