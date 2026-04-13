@@ -114,7 +114,8 @@ if __name__ == "__main__":
     gui = Gui(root_window, relay_control)
     camera_control = CameraControl(gui.main_window.preview_area)
     # For testing image recognition
-    #camera_control = CameraControl(gui.main_window.preview_area,"haarcascade_frontalface_default.xml")
+    #camera_control = CameraControl(gui.main_window.preview_area,haarcascade = "haarcascade_frontalface_default.xml")
+    #camera_control = CameraControl(gui.main_window.preview_area,ultralytics= "yolo26n.pt")
     gui.set_video_formats(camera_control.get_available_formats())
     race_sequence = RaceSequence(relay_control, camera_control,gui)
     gui.set_race_sequence(race_sequence)

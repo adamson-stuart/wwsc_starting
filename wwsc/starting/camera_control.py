@@ -1,4 +1,5 @@
 from time import time
+from ultralytics import YOLO
 import tempfile
 import cv2
 import datetime
@@ -19,7 +20,7 @@ font_scale = 1.5
 preview_scale = 5
 """
 class CameraControl:
-    def __init__(self, preview_area, haarcascade = None):
+    def __init__(self, preview_area, haarcascade = None, ultralytics = None):
         self.recording = False
         self.last_video_frame_time = time()*1000
         self.preview_area = preview_area
@@ -32,6 +33,10 @@ class CameraControl:
             self.boat_cascade = cv2.CascadeClassifier(haarcascade)
         else:
             self.boat_cascade = None
+        if ultralytics is not None:
+            self.yolo = YOLO(ultralytics)
+        else:
+            self.yoyo = None
         print("Video Width: "+str(self.camera.get(cv2.CAP_PROP_FRAME_WIDTH)))
         print("Video Height: "+str(self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT)))
         print("Video Autoexposure: "+str(self.camera.get(cv2.CAP_PROP_AUTO_EXPOSURE)))
@@ -101,12 +106,25 @@ class CameraControl:
                     self.output.write(frame)
                     self.last_video_frame_time = current_millis
 
-            # Image recognition - convert to grayscale
+            # Haar cascade image recognition - convert to grayscale
             if self.boat_cascade is not None:
                 gray_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 boats = self.boat_cascade.detectMultiScale(gray_image, scaleFactor=1.1,minNeighbors=5, minSize=(30,30))
                 for (x,y,width,height) in boats:
                     cv2.rectangle(frame, (x,y), (x+width,y+height), (255, 0, 0), 2)
+            # YOLO image recognition
+            if self.yolo is not None:
+                results = self.yolo.track(frame, stream=True)
+                for result in results:
+                    object_types = result.names
+                    if result.boxes is not None:
+                        for boat in result.boxes:
+                            if boat.conf[0] > 0.4:
+                                object_type = object_types[int(boat.cls[0])]
+                                confidence = float(boat.conf[0])
+                                x1, y1, x2, y2 = map(int, boat.xyxy[0])
+                                cv2.rectangle(frame, (x1,y1), (x2,y2), (255, 0, 0), 2)
+                                cv2.putText(frame, f"{object_type} {confidence:.2f}", (x1, max(y1 - 10, 20)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 2)
             # Prepare image for preview
             rbg_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             h,w,ch=rbg_image.shape
