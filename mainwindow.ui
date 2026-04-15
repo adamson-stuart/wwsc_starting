@@ -37,7 +37,7 @@
     <property name="geometry">
      <rect>
       <x>380</x>
-      <y>400</y>
+      <y>380</y>
       <width>71</width>
       <height>16</height>
      </rect>
@@ -50,7 +50,7 @@
     <property name="geometry">
      <rect>
       <x>460</x>
-      <y>400</y>
+      <y>380</y>
       <width>271</width>
       <height>16</height>
      </rect>
@@ -162,7 +162,7 @@
     <widget class="QLabel" name="label_7">
      <property name="geometry">
       <rect>
-       <x>240</x>
+       <x>230</x>
        <y>30</y>
        <width>71</width>
        <height>16</height>
@@ -176,9 +176,9 @@
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>70</y>
+       <y>60</y>
        <width>421</width>
-       <height>211</height>
+       <height>191</height>
       </rect>
      </property>
      <property name="text">
@@ -188,7 +188,7 @@
     <widget class="QLabel" name="race_time">
      <property name="geometry">
       <rect>
-       <x>320</x>
+       <x>310</x>
        <y>30</y>
        <width>181</width>
        <height>16</height>
@@ -215,10 +215,23 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>280</y>
+       <y>260</y>
        <width>103</width>
        <height>32</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="detection">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>290</y>
+       <width>141</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Boat Detection</string>
      </property>
     </widget>
    </widget>

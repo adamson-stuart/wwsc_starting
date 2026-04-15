@@ -42,6 +42,7 @@ def get_ip():
 class Gui:
     def __init__(self, main_window, relay_control):
         self.main_window = main_window
+        self.camera = None
         self.relay_control = relay_control
         relay_control.set_callback(self)
         self.race_sequence = None
@@ -56,7 +57,15 @@ class Gui:
         main_window.start_button.clicked.connect(self.start_race)
         main_window.reset_button.clicked.connect(self.reset_race)
         main_window.test_relays.clicked.connect(self.start_test)
+        main_window.detection.stateChanged.connect(self.detection_changed)
         main_window.download_qr_code.setPixmap(pil2pixmap(self.get_video_download_url()))
+
+    def set_camera(self, camera):
+        self.camera = camera
+
+    def detection_changed(self):
+        if self.camera is not None:
+            self.camera.set_detection(self.main_window.detection.isChecked())
 
     def set_video_formats(self, formats):
         for format in formats:
@@ -112,10 +121,11 @@ if __name__ == "__main__":
     root_window.show()
     relay_control = RelayControl([5,13,6],[26,19],17)
     gui = Gui(root_window, relay_control)
-    camera_control = CameraControl(gui.main_window.preview_area)
     # For testing image recognition
+    #camera_control = CameraControl(gui.main_window.preview_area)
     #camera_control = CameraControl(gui.main_window.preview_area,haarcascade = "haarcascade_frontalface_default.xml")
-    #camera_control = CameraControl(gui.main_window.preview_area,ultralytics= "yolo26n.pt")
+    camera_control = CameraControl(gui.main_window.preview_area,ultralytics= "yolo26n.pt")
+    gui.set_camera(camera_control)
     gui.set_video_formats(camera_control.get_available_formats())
     race_sequence = RaceSequence(relay_control, camera_control,gui)
     gui.set_race_sequence(race_sequence)
