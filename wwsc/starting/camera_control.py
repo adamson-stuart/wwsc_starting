@@ -121,7 +121,7 @@ class CameraControl:
                         cv2.rectangle(frame, (x,y), (x+width,y+height), (255, 0, 0), 2)
                 # YOLO image recognition
                 if self.yolo is not None:
-                    results = self.yolo.track(frame, stream=True)
+                    results = self.yolo.track(frame, verbose=False,stream=True)
                     for result in results:
                         object_types = result.names
                         if result.boxes is not None:
