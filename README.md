@@ -2,7 +2,10 @@
 WWSC Racing Start System
 
 # Running
-python wwsc/starting/gui.py
+python wwsc/starting/gui.py <optional video>
+
+If you provide an arguement to the program then it will attempt to load this video for simulation rather than using a camera.  This
+is useful for development
 
 
 # Required libraries

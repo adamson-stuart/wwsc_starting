@@ -1,3 +1,4 @@
+import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QPushButton
 from wwsc.starting.relay_control import RelayControl
 from PyQt5 import uic, QtGui
@@ -117,6 +118,10 @@ class Gui:
 if __name__ == "__main__":
     app = QApplication([])
 
+    video = None
+    if len(sys.argv)>1:
+        video = sys.argv[1]
+
     root_window = uic.loadUi("mainwindow.ui")
     root_window.show()
     relay_control = RelayControl([5,13,6],[26,19],17)
@@ -124,7 +129,7 @@ if __name__ == "__main__":
     # For testing image recognition
     #camera_control = CameraControl(gui.main_window.preview_area)
     #camera_control = CameraControl(gui.main_window.preview_area,haarcascade = "haarcascade_frontalface_default.xml")
-    camera_control = CameraControl(gui.main_window.preview_area,ultralytics= "yolo26n.pt")
+    camera_control = CameraControl(gui.main_window.preview_area,video = video, ultralytics= "yolo26n.pt")
     gui.set_camera(camera_control)
     gui.set_video_formats(camera_control.get_available_formats())
     race_sequence = RaceSequence(relay_control, camera_control,gui)

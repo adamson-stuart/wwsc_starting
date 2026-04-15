@@ -20,12 +20,15 @@ font_scale = 1.5
 preview_scale = 5
 """
 class CameraControl:
-    def __init__(self, preview_area, haarcascade = None, ultralytics = None):
+    def __init__(self, preview_area, video = None, haarcascade = None, ultralytics = None):
         self.recording = False
         self.last_video_frame_time = time()*1000
         self.preview_area = preview_area
         self.overlay_string=""
-        self.camera = cv2.VideoCapture(0)
+        if video is None:
+            self.camera = cv2.VideoCapture(0)
+        else:
+            self.camera = cv2.VideoCapture(video)
         self.camera.set(cv2.CAP_PROP_FRAME_WIDTH,VIDEO_WIDTH)
         self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT,VIDEO_HEIGHT)
         self.camera.set(cv2.CAP_PROP_AUTO_EXPOSURE,3)
