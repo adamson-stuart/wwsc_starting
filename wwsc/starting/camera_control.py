@@ -25,6 +25,8 @@ class CameraControl:
         self.last_video_frame_time = time()*1000
         self.preview_area = preview_area
         self.overlay_string=""
+        self.video_name = ""
+        self.just_started = False
         if video is None:
             self.camera = cv2.VideoCapture(0)
         else:
@@ -51,7 +53,7 @@ class CameraControl:
         self.camera.set(cv2.CAP_PROP_FPS,10)
         print("Video FPR: "+str(self.camera.get(cv2.CAP_PROP_FPS)))
 
-        # Start a thread which fires every 50ms to attempt to read video
+        # Start a thread which fires every 100ms to attempt to read video
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(100)
@@ -59,8 +61,10 @@ class CameraControl:
     def set_detection(self, status):
         self.detection = status
     
-    def set_overlay_string(self, text):
+    def set_overlay_string(self, text, start):
         self.overlay_string = text
+        if start:
+            self.just_started = True
 
     def get_available_formats(self):
         codecs_to_test = ["H264", "DIVX", "XVID", "MJPG", "X264", "WMV1", "WMV2", "FMP4", "mp4v", "avc1"]
@@ -81,7 +85,8 @@ class CameraControl:
         a frame twice a second.  This ways the video appears to run a 7.5x speed
         """
         if not self.recording:
-            filename = "/var/www/html/"+datetime.datetime.now().strftime("%Y%m%d_%H%M%S")+"_"+video_format+".mkv"
+            self.video_name = "/var/www/html/"+datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = self.video_name+"_"+video_format+".mkv"
             fourcc = cv2.VideoWriter_fourcc(*video_format)
             self.output = cv2.VideoWriter(filename, fourcc, 15.0,(VIDEO_WIDTH,VIDEO_HEIGHT))
             self.output.set(cv2.VIDEOWRITER_PROP_QUALITY,100)
@@ -145,5 +150,9 @@ class CameraControl:
             image = QPixmap.fromImage(scaled_image)
             #image.setOffset((420-VIDEO_WIDTH*scale)/2,0)
             self.preview_area.setPixmap(image)
+            if self.just_started:
+                self.just_started = False
+                filename = self.video_name+".jpg"
+                cv2.imwrite(filename,frame)
 
 

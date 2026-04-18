@@ -95,6 +95,7 @@ class RaceSequence:
         current_sequence = 0
         # Now loop forever running the race 
         while(self.race_running):
+            start = False
             now = datetime.datetime.now()
             race_time = now - self.start_time
 
@@ -104,6 +105,8 @@ class RaceSequence:
                     self.relay_control.set_lights(self.starting_sequence[current_sequence]["lights"])
                     self.relay_control.sound_horn(self.starting_sequence[current_sequence]["horn"])
                     current_sequence = current_sequence + 1
+                    if current_sequence == len(self.starting_sequence):
+                        start = True
                 else:
                     break
 
@@ -114,7 +117,7 @@ class RaceSequence:
             race_time_formatted = format_seconds(race_time.total_seconds())
 
             overlay_string = f"Date: {current_date}, Current Time: {current_time}, Race Time: {race_time_formatted}"
-            self.camera_control.set_overlay_string(overlay_string)
+            self.camera_control.set_overlay_string(overlay_string, start)
 
             if self.gui is not None:
                 self.gui.set_status(current_date, start_time, str(race_time_formatted))

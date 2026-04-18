@@ -130,6 +130,7 @@ if __name__ == "__main__":
     #camera_control = CameraControl(gui.main_window.preview_area)
     #camera_control = CameraControl(gui.main_window.preview_area,haarcascade = "haarcascade_frontalface_default.xml")
     camera_control = CameraControl(gui.main_window.preview_area,video = video, ultralytics= "yolo26n.pt")
+    #camera_control = CameraControl(gui.main_window.preview_area,video = video, ultralytics= "yolo_model.pt")
     gui.set_camera(camera_control)
     gui.set_video_formats(camera_control.get_available_formats())
     race_sequence = RaceSequence(relay_control, camera_control,gui)
