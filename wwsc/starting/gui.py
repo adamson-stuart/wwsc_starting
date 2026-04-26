@@ -119,8 +119,11 @@ if __name__ == "__main__":
     app = QApplication([])
 
     video = None
+    zoomed_video = None
     if len(sys.argv)>1:
         video = sys.argv[1]
+    if len(sys.argv)>2:
+        zoomed_video = sys.argv[2]
 
     root_window = uic.loadUi("mainwindow.ui")
     root_window.show()
@@ -129,7 +132,7 @@ if __name__ == "__main__":
     # For testing image recognition
     #camera_control = CameraControl(gui.main_window.preview_area)
     #camera_control = CameraControl(gui.main_window.preview_area,haarcascade = "haarcascade_frontalface_default.xml")
-    camera_control = CameraControl(gui.main_window.preview_area,video = video, ultralytics= "yolo26n.pt")
+    camera_control = CameraControl(gui.main_window.preview_area,zoomed_preview_area = gui.main_window.zoomed_preview_area,video = video, zoomed_video = zoomed_video, ultralytics= "yolo26n.pt")
     #camera_control = CameraControl(gui.main_window.preview_area,video = video, ultralytics= "yolo_model.pt")
     gui.set_camera(camera_control)
     gui.set_video_formats(camera_control.get_available_formats())

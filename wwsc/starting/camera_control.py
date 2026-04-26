@@ -20,20 +20,29 @@ font_scale = 1.5
 preview_scale = 5
 """
 class CameraControl:
-    def __init__(self, preview_area, video = None, haarcascade = None, ultralytics = None):
+    def __init__(self, preview_area, zoomed_preview_area = None, video = None, zoomed_video = None, haarcascade = None, ultralytics = None):
         self.recording = False
         self.last_video_frame_time = time()*1000
         self.preview_area = preview_area
+        self.zoomed_preview_area = zoomed_preview_area
         self.overlay_string=""
         self.video_name = ""
+        self.zoomed_video_name = ""
         self.just_started = False
         if video is None:
             self.camera = cv2.VideoCapture(0)
         else:
             self.camera = cv2.VideoCapture(video)
+        if zoomed_video is None:
+            self.zoomed_camera = cv2.VideoCapture(1)
+        else:
+            self.zoomed_camera = cv2.VideoCapture(zoomed_video)
         self.camera.set(cv2.CAP_PROP_FRAME_WIDTH,VIDEO_WIDTH)
         self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT,VIDEO_HEIGHT)
         self.camera.set(cv2.CAP_PROP_AUTO_EXPOSURE,3)
+        self.zoomed_camera.set(cv2.CAP_PROP_FRAME_WIDTH,VIDEO_WIDTH)
+        self.zoomed_camera.set(cv2.CAP_PROP_FRAME_HEIGHT,VIDEO_HEIGHT)
+        self.zoomed_camera.set(cv2.CAP_PROP_AUTO_EXPOSURE,3)
         self.detection = False
         if haarcascade is not None:
             self.boat_cascade = cv2.CascadeClassifier(haarcascade)
@@ -48,10 +57,15 @@ class CameraControl:
         print("Video Width: "+str(self.camera.get(cv2.CAP_PROP_FRAME_WIDTH)))
         print("Video Height: "+str(self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT)))
         print("Video Autoexposure: "+str(self.camera.get(cv2.CAP_PROP_AUTO_EXPOSURE)))
+        print("Zoomed Video Width: "+str(self.zoomed_camera.get(cv2.CAP_PROP_FRAME_WIDTH)))
+        print("Zoomed Video Height: "+str(self.zoomed_camera.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+        print("Zoomed Video Autoexposure: "+str(self.zoomed_camera.get(cv2.CAP_PROP_AUTO_EXPOSURE)))
 
         # Ask the camera to record 10 frames per second.  We won't save all of these - but no need getting 30 or so 
         self.camera.set(cv2.CAP_PROP_FPS,10)
+        self.zoomed_camera.set(cv2.CAP_PROP_FPS,10)
         print("Video FPR: "+str(self.camera.get(cv2.CAP_PROP_FPS)))
+        print("Zoomed Video FPR: "+str(self.zoomed_camera.get(cv2.CAP_PROP_FPS)))
 
         # Start a thread which fires every 100ms to attempt to read video
         self.timer = QTimer()
@@ -86,10 +100,14 @@ class CameraControl:
         """
         if not self.recording:
             self.video_name = "/var/www/html/"+datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            self.zoomed_video_name = "/var/www/html/zoomed_"+datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = self.video_name+"_"+video_format+".mkv"
+            zoomed_filename = self.zoomed_video_name+"_"+video_format+".mkv"
             fourcc = cv2.VideoWriter_fourcc(*video_format)
             self.output = cv2.VideoWriter(filename, fourcc, 15.0,(VIDEO_WIDTH,VIDEO_HEIGHT))
             self.output.set(cv2.VIDEOWRITER_PROP_QUALITY,100)
+            self.zoomed_output = cv2.VideoWriter(zoomed_filename, fourcc, 15.0,(VIDEO_WIDTH,VIDEO_HEIGHT))
+            self.zoomed_output.set(cv2.VIDEOWRITER_PROP_QUALITY,100)
             print ("Video Quality: "+str(self.output.get(cv2.VIDEOWRITER_PROP_QUALITY)))
             self.recording = True
             return filename
@@ -102,6 +120,7 @@ class CameraControl:
         """
         if self.recording:
             self.output.release()
+            self.zoomed_output.release()
             self.recording = False
         
     def update_frame(self):
@@ -109,6 +128,30 @@ class CameraControl:
         Process 1 frame of video.  This will attempt to read a frame of video from the camera, add a text overlay onto it
         and if we are recording write out the video frame
         """
+        ret, frame = self.zoomed_camera.read()
+        if ret:
+            cv2.putText(frame, self.overlay_string,(5,30),cv2.FONT_HERSHEY_SIMPLEX,font_scale,(0,0,200),2,cv2.LINE_AA)
+
+            if self.recording:
+                current_millis = time() * 1000
+                # Only record 2 frames per second
+                if current_millis - self.last_video_frame_time > 500:
+                    self.zoomed_output.write(frame)
+
+            # Prepare image for preview
+            frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+            rbg_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            h,w,ch=rbg_image.shape
+            bytes_per_line = ch*w
+            qt_image = QImage(rbg_image.data,w,h,bytes_per_line, QImage.Format_RGB888)
+            scale = 177.0/VIDEO_WIDTH
+            scaled_image = qt_image.scaled(int(VIDEO_HEIGHT*scale), int(VIDEO_WIDTH*scale))
+            image = QPixmap.fromImage(scaled_image)
+            self.zoomed_preview_area.setPixmap(image)
+        if self.just_started:
+            filename = self.zoomed_video_name+".jpg"
+            cv2.imwrite(filename,frame)
+
         ret, frame = self.camera.read()
         if ret:
             cv2.putText(frame, self.overlay_string,(5,30),cv2.FONT_HERSHEY_SIMPLEX,font_scale,(0,0,200),2,cv2.LINE_AA)
@@ -145,7 +188,7 @@ class CameraControl:
             h,w,ch=rbg_image.shape
             bytes_per_line = ch*w
             qt_image = QImage(rbg_image.data,w,h,bytes_per_line, QImage.Format_RGB888)
-            scale = 191.0/VIDEO_HEIGHT
+            scale = 201.0/VIDEO_HEIGHT
             scaled_image = qt_image.scaled(int(VIDEO_WIDTH*scale), int(VIDEO_HEIGHT*scale))
             image = QPixmap.fromImage(scaled_image)
             #image.setOffset((420-VIDEO_WIDTH*scale)/2,0)
