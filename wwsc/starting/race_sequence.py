@@ -11,8 +11,12 @@ def format_seconds(seconds):
     hours = int(seconds / (60*60))
     minutes = int(seconds/60)%60
     second = int(seconds%60)
+    millis = int((seconds - int(seconds))*1000)
 
-    return f"{negative}{minutes:02d}:{second:02d}"
+    if abs(seconds<2):
+        return f"{negative}{minutes:02d}:{second:02d}:{millis:04d}"
+    else:
+        return f"{negative}{minutes:02d}:{second:02d}"
 
 class RaceSequence:
     """
@@ -117,7 +121,7 @@ class RaceSequence:
             race_time_formatted = format_seconds(race_time.total_seconds())
 
             overlay_string = f"Date: {current_date}, Current Time: {current_time}, Race Time: {race_time_formatted}"
-            self.camera_control.set_overlay_string(overlay_string, start)
+            self.camera_control.set_overlay_string(overlay_string, start, race_time.total_seconds())
 
             if self.gui is not None:
                 self.gui.set_status(current_date, start_time, str(race_time_formatted))
